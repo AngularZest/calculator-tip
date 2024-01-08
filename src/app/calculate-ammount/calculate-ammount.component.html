@@ -1,0 +1,76 @@
+<section class="container p-3 mt-5">
+    <div class="row d-flex justify-content-between">
+        <div class="col-md-6 p-5 border right-section">
+            <h3 class="text-center ">Payment</h3>
+            <hr>
+            <table class="table borderless">
+                <thead>
+                    <tr>
+                        <th scope="col">Item</th>
+                        <th scope="col" id="per-person-bill" class="valueth">{{cleanedValue || '0 . 00'}}</th>
+                    </tr>
+                    <tr>
+                        <th scope="col">Quantity</th>
+                        <th scope="col" id="per-person-bill" class="valueth">{{quantity || '0 . 00'}}</th>
+                    </tr>
+
+                    <tr>
+                        <th scope="col">Tip</th>
+                        <th scope="col" id='total-tip' class="valueth">{{tip|| '0 . 00'}} %</th>
+                    </tr>
+                    <tr>
+                        <th scope="col">Gst</th>
+                        <th scope="col" id='total-tip' class="valueth">{{gst|| '0 . 00'}} %</th>
+                    </tr>
+
+                    <tr>
+                        <th scope="col">Total</th>
+                        <th scope="col" id='total-bill' class="valueth">{{finalAmount || '0 . 00'}} ₹ </th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="col-md-5 p-5">
+            <form [formGroup]="calculate">
+                <h6>Item</h6>
+                <select id="input-person" formControlName="price" class='form-control m-2 w-100'
+                    (change)="getPrice($event)">
+                    <option disabled selected>Select Item</option>
+                    @for (pricelist of pricelist; track pricelist.price ) {
+                    <option>{{pricelist?.Dish}} - {{pricelist?.price}} </option>
+                    }
+                </select>
+
+                <h6>Quantity</h6>
+                <input type="number" (click)="getTotal()" (keydown.enter)="getTotal()" id="input-person"
+                    formControlName="quantity" class='form-control m-2 w-100'>
+
+                <!-- <h6>Total</h6>
+                <input (click)="getTotal()" (keydown.enter)="getTotal()" type="number" id="input-bill"
+                    formControlName="total" class='form-control m-2 w-100'> -->
+                <h6>Tip %</h6>
+                <div class="tip_button">
+                    <input (click)="value(5)" value="5 %" type="button" [ngClass]="{'success': isActive == 5}">
+                    <input (click)="value(10)" value="10 %" type="button" [ngClass]="{'success': isActive == 10}">
+                    <input (click)="value(15)" value="15 %" type="button" [ngClass]="{'success': isActive == 15}">
+                </div>
+                <div class="tip_button">
+                    <input (click)="value(25)" value="25 %" type="button" [ngClass]="{'success': isActive == 25}">
+                    <input (click)="value(50)" value="50 %" type="button" [ngClass]="{'success': isActive == 50}">
+                    <input type="number" id="input-person" formControlName="tip" placeholder="Custom"
+                        class='form-control m-2 w-100'>
+                </div>
+                <h6>GST %</h6>
+                <input type="number" id="input-tip" formControlName="gst" class='form-control m-2 w-100'>
+                <h6>Final Total</h6>
+                <input type="number" id="input-tip" formControlName="finaltotal" class='form-control m-2 w-100'>
+                <p class="text-danger" id='warning'></p>
+                <div class="buttons__">
+                    <button (click)="calculateammount()" class="btn btn-success m-2 w-100">Calculate</button>
+                    <button (click)="handleReset()" class="btn btn-dark m-2 w-100"
+                        style="background:#b4dee5; color:black; border:none!important">Reset</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
