@@ -33,6 +33,7 @@ th {
 input {
     background: #F3F9FA;
     border: none;
+    margin-bottom: 5px;
 }
 
 select {
@@ -41,7 +42,8 @@ select {
 }
 
 h6 {
-    color: #8A999B
+    color: #8A999B;
+    margin-bottom: 5px;
 }
 
 .tip_button {
@@ -61,6 +63,12 @@ input[type="button"] {
     border-radius: 7px;
     font-size: 20px;
 }
+.h-40{
+    height: 40px!important;
+    margin-top: 7px;
+    margin-bottom: 7px;
+    border-radius: 0.25rem;
+}
 
 .form-control:focus {
     color: #212529;
@@ -73,3 +81,4 @@ input[type="button"] {
 .success {
     background: #55C2AE !important;
 }
+
