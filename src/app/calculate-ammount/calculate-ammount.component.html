@@ -34,33 +34,34 @@
         <div class="col-md-5 p-5 order-xl-2 order-sm-1">
             <form [formGroup]="calculate">
                 <h6>Item</h6>
-                <select id="input-person" formControlName="price" class='h-40 w-100'
-                    (change)="getPrice($event)">
+                <select id="input-person" formControlName="price" class='h-40 w-100' (change)="getPrice($event)">
                     <option disabled selected value="">Select Item</option>
                     @for (pricelist of pricelist; track pricelist ) {
                     <option [value]="pricelist?.price">{{pricelist?.Dish}} </option>
                     }
                 </select>
                 <h6>Price</h6>
-                <input type="number"  id="input-person" [value]="itemPrice"  class='h-40 form-control w-100' readonly>
+                <input type="number" id="input-person" [value]="itemPrice" class='h-40 form-control w-100' readonly>
                 <h6>Quantity</h6>
-                <input type="number"  id="input-person"
-                    formControlName="quantity"  class='h-40 form-control w-100'>
+                <input type="number" id="input-person" formControlName="quantity" class='h-40 form-control w-100'>
 
                 <!-- <h6>Total</h6>
                 <input (click)="getTotal()" (keydown.enter)="getTotal()" type="number" id="input-bill"
                     formControlName="total" class='form-control m-2 w-100'> -->
                 <h6>Tip %</h6>
                 <div class="tip_button">
-                    <input (click)="value(5)" value="5 %" type="button" [ngClass]="{'success': isActive == 5 }" style="margin-left: 0;">
+                    <input (click)="value(5)" value="5 %" type="button" [ngClass]="{'success': isActive == 5 }"
+                        style="margin-left: 0;">
                     <input (click)="value(10)" value="10 %" type="button" [ngClass]="{'success': isActive == 10}">
-                    <input (click)="value(15)" value="15 %" type="button" [ngClass]="{'success': isActive == 15}" style="margin-right: 0;">
+                    <input (click)="value(15)" value="15 %" type="button" [ngClass]="{'success': isActive == 15}"
+                        style="margin-right: 0;">
                 </div>
                 <div class="tip_button">
-                    <input (click)="value(25)" value="25 %" type="button" [ngClass]="{'success': isActive == 25}" style="margin-left: 0;">
+                    <input (click)="value(25)" value="25 %" type="button" [ngClass]="{'success': isActive == 25}"
+                        style="margin-left: 0;">
                     <input (click)="value(50)" value="50 %" type="button" [ngClass]="{'success': isActive == 50}">
                     <input type="number" id="input-person" formControlName="tip" placeholder="Custom"
-                        class='form-control m-2 w-100' style="margin-right: 0!important;padding-left: 10px;height:45px">
+                        class='form-control m-2 w-100' style="margin-right: 0!important;padding-left: 10px;height:45px"  (click)="hidetip()">
                 </div>
                 <h6>Gst %</h6>
                 <input type="number" id="input-tip" formControlName="gst" class='h-40 form-control  w-100'>
@@ -68,7 +69,8 @@
                 <input id="input-tip" readonly formControlName="finaltotal" class='form-control m-2 w-100'> -->
                 <p class="text-danger" id='warning'></p>
                 <div class="buttons__">
-                    <button (click)="calculateammount()" [disabled]="this.calculate.invalid" class="btn btn-success  w-100" style="margin-bottom: 15px;">Calculate</button>
+                    <button (click)="calculateammount()" [disabled]="this.calculate.invalid"
+                        class="btn btn-success  w-100" style="margin-bottom: 15px;">Calculate</button>
                     <button (click)="handleReset()" class="btn btn-dark w-100"
                         style="background:#b4dee5; color:black; border:none!important">Reset</button>
                 </div>

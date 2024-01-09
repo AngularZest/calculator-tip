@@ -137,4 +137,8 @@ export class CalculateAmmountComponent {
     // Generate the PDF
     html2pdf(element, pdfOptions);
 }
+hidetip(){
+  this.tipvalue = '';
+  this.isActive = false
+}
 }
