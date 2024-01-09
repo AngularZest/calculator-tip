@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-
+declare var html2pdf: any;
 @Component({
   selector: 'app-calculate-ammount',
   standalone: true,
@@ -25,6 +25,7 @@ export class CalculateAmmountComponent {
   itemName:any
   isActive:any
   tipvalue:any
+  @ViewChild('pdfTable') pdfTable!: ElementRef;
   constructor(private fb: FormBuilder) {
     this.calculate = this.fb.group({
       price: ['', Validators.required],
@@ -120,4 +121,20 @@ export class CalculateAmmountComponent {
     this.finalAmount = '0 . 00 ';
     this.isActive = null; // Reset the active tip button
   }
+  downloadAsPDF() {
+    // Target the element you want to convert to PDF
+    const element = document.getElementById('pdfTable');
+
+    // Configuration for html2pdf
+    const pdfOptions = {
+        margin: 10,
+        filename: 'bill.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    };
+
+    // Generate the PDF
+    html2pdf(element, pdfOptions);
+}
 }
