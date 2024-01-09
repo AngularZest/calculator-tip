@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-calculate-ammount',
@@ -27,10 +27,10 @@ export class CalculateAmmountComponent {
   tipvalue:any
   constructor(private fb: FormBuilder) {
     this.calculate = this.fb.group({
-      price: [''],
-      total: [''],
-      gst: [''],
-      quantity: [''],
+      price: ['', Validators.required],
+      total: ['' , ],
+      gst: ['',Validators.required],
+      quantity: ['',Validators.required],
       finaltotal: [0.00],
       tip: ['']
     });

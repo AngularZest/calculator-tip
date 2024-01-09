@@ -1,6 +1,6 @@
 <section class="container p-3 mt-5">
     <div class="row d-flex justify-content-between">
-        <div class="col-md-6 p-5 border right-section">
+        <div class="col-md-6 p-5 border right-section order-xl-1 order-sm-2">
             <h3 class="text-center ">Payment</h3>
             <hr>
             <table class="table borderless">
@@ -30,12 +30,12 @@
                 </thead>
             </table>
         </div>
-        <div class="col-md-5 p-5">
+        <div class="col-md-5 p-5 order-xl-2 order-sm-1">
             <form [formGroup]="calculate">
                 <h6>Item</h6>
                 <select id="input-person" formControlName="price" class='h-40 w-100'
                     (change)="getPrice($event)">
-                    <option disabled selected>Select Item</option>
+                    <option disabled selected value="">Select Item</option>
                     @for (pricelist of pricelist; track pricelist ) {
                     <option [value]="pricelist?.price">{{pricelist?.Dish}} </option>
                     }
@@ -67,7 +67,7 @@
                 <input id="input-tip" readonly formControlName="finaltotal" class='form-control m-2 w-100'> -->
                 <p class="text-danger" id='warning'></p>
                 <div class="buttons__">
-                    <button (click)="calculateammount()" [disabled]="!this.calculate" class="btn btn-success  w-100" style="margin-bottom: 15px;">Calculate</button>
+                    <button (click)="calculateammount()" [disabled]="this.calculate.invalid" class="btn btn-success  w-100" style="margin-bottom: 15px;">Calculate</button>
                     <button (click)="handleReset()" class="btn btn-dark w-100"
                         style="background:#b4dee5; color:black; border:none!important">Reset</button>
                 </div>

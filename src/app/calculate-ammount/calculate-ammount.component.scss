@@ -63,8 +63,9 @@ input[type="button"] {
     border-radius: 7px;
     font-size: 20px;
 }
-.h-40{
-    height: 40px!important;
+
+.h-40 {
+    height: 40px !important;
     margin-top: 7px;
     margin-bottom: 7px;
     border-radius: 0.25rem;
@@ -78,7 +79,53 @@ input[type="button"] {
     box-shadow: 0 0 0 0.15rem #9FE8DF !important;
 }
 
+select:focus {
+    color: #212529;
+    background-color: #fff;
+    border-color: #F3F9FA !important;
+    outline: 0;
+    box-shadow: 0 0 0 0.15rem #9FE8DF !important;
+}
+
+select {
+    width: 268px;
+    padding: 5px;
+    font-size: 16px;
+    line-height: 1;
+    border: 0;
+    border-radius: 5px;
+    height: 34px;
+    background: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat right #F3F9FA;
+    -webkit-appearance: none;
+    background-position-x: 25em;
+}
+
 .success {
     background: #55C2AE !important;
 }
 
+.form-control:disabled,
+.form-control[readonly] {
+    background-color: #F3F9FA !important;
+    opacity: 1;
+}
+
+.btn-check:focus+.btn-dark,
+.btn-dark:focus {
+
+    border-color: #9FE8DF !important;
+    box-shadow: none !important;
+}
+
+.btn-success:focus {
+
+    border-color: #9FE8DF !important;
+    box-shadow: none !important;
+}
+
+th {
+    vertical-align: middle;
+    border: 0 !important;
+    text-align: left;
+    width: 100px;
+}
