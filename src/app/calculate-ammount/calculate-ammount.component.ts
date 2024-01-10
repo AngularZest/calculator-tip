@@ -36,7 +36,7 @@ export class CalculateAmmountComponent {
   tipvalue: any
   totaltip:number = 0.00
   totalamount:any
-  tipAmount!:number
+  tipAmount:any
   numberOfPeople: number = 1;
   finaltotal:any
   myForm: FormGroup;
@@ -54,6 +54,7 @@ export class CalculateAmmountComponent {
     });
   }
   value(value: any) {
+    this.tipAmount = ''
     this.isActive = value
     this.tipvalue = value
     this.totalamount = Number(this.ammount)
@@ -62,10 +63,12 @@ export class CalculateAmmountComponent {
      
   }
   onAmountChangetip(newValue: number){
+    
     this.tipAmount = newValue
     this.totalamount = Number(this.ammount)
     this.totaltip = (this.totalamount *  this.tipAmount / 100)
     this.finaltotal = this.totaltip + this.totalamount
+   
 
   }
   onAmountChange(newValue: number) {

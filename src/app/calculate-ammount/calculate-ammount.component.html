@@ -35,7 +35,7 @@
                     <option [value]="pricelist?.price">{{pricelist?.Dish}} </option>
                     }
                 </select> -->
-                <h6>Price</h6>
+                <h6>Amount</h6>
                 <input (keypress)="onlyNumberKey($event)" pattern="[a-zA-Z]+" class="h-40 form-control w-100" pattern="\d+" name="f" [(ngModel)]="ammount"
                     (ngModelChange)="onAmountChange($event)" formControlName="f" min="10" max="100" minlength="2"
                     maxlength="7">
