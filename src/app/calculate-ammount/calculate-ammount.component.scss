@@ -1,3 +1,12 @@
+$color_1: #fff;
+$color_2: #55C2AD;
+$color_3: #8A999B;
+$color_4: #212529;
+$background-color_1: #fff;
+$background-color_2: #F3F9FA;
+$border-color_1: #F3F9FA;
+$border-color_2: #9FE8DF;
+
 .container {
     background: #fff;
     border-radius: 25px;
@@ -5,12 +14,17 @@
     box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
     border: 0px;
 }
-
+.error {
+    color: red;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
 .right-section {
     background: rgb(26, 72, 75);
-    color: #fff;
+    color: $color_1;
     border-radius: 20px;
-
+    height: 100%;
+    margin: auto;
     .table {
         color: #fff;
     }
@@ -21,73 +35,29 @@
 }
 
 .valueth {
-    color: #55C2AD;
+    color: $color_2;
     font-size: 28px;
+    text-align: right;
 }
 
 th {
     vertical-align: middle;
     border: 0 !important;
+    vertical-align: middle;
+    border: 0 !important;
+    text-align: left;
+    width: 100px;
 }
 
 input {
     background: #F3F9FA;
     border: none;
-    margin-bottom: 5px;
+    margin-bottom: 15px!important;
 }
 
 select {
     background: #F3F9FA;
     border: none;
-}
-
-h6 {
-    color: #8A999B;
-    margin-bottom: 5px;
-}
-
-.tip_button {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    /* justify-content: space-evenly; */
-}
-
-input[type="button"] {
-    width: 63%;
-    margin: 6px;
-    background: rgb(26, 72, 75);
-    border: none;
-    height: 45px;
-    color: #fff;
-    border-radius: 7px;
-    font-size: 20px;
-}
-
-.h-40 {
-    height: 40px !important;
-    margin-top: 7px;
-    margin-bottom: 7px;
-    border-radius: 0.25rem;
-}
-
-.form-control:focus {
-    color: #212529;
-    background-color: #fff;
-    border-color: #F3F9FA !important;
-    outline: 0;
-    box-shadow: 0 0 0 0.15rem #9FE8DF !important;
-}
-
-select:focus {
-    color: #212529;
-    background-color: #fff;
-    border-color: #F3F9FA !important;
-    outline: 0;
-    box-shadow: 0 0 0 0.15rem #9FE8DF !important;
-}
-
-select {
     width: 268px;
     padding: 5px;
     font-size: 16px;
@@ -98,34 +68,86 @@ select {
     background: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat right #F3F9FA;
     -webkit-appearance: none;
     background-position-x: 25em;
+
+    &:focus {
+        color: $color_4;
+        background-color: $background-color_1;
+        border-color: $border-color_1 !important;
+        outline: 0;
+        box-shadow: 0 0 0 0.15rem #9FE8DF !important;
+    }
+}
+
+h6 {
+    color: $color_3;
+    margin-bottom: 5px;
+}
+
+.tip_button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+input[type="button"] {
+    width: 63%;
+    margin: 6px;
+    background: rgb(26, 72, 75);
+    border: none;
+    height: 45px;
+    color: $color_1;
+    border-radius: 7px;
+    font-size: 20px;
+}
+
+.h-40 {
+    height: 40px !important;
+    margin-top: 10px;
+    margin-bottom: 23px;
+    border-radius: 0.25rem;
+}
+
+.form-control {
+    &:focus {
+        color: $color_4;
+        background-color: $background-color_1;
+        border-color: $border-color_1 !important;
+        outline: 0;
+        box-shadow: 0 0 0 0.15rem #9FE8DF !important;
+    }
+
+    &:disabled {
+        background-color: $background-color_2 !important;
+        opacity: 1;
+    }
 }
 
 .success {
     background: #55C2AE !important;
 }
 
-.form-control:disabled,
 .form-control[readonly] {
-    background-color: #F3F9FA !important;
+    background-color: $background-color_2 !important;
     opacity: 1;
 }
 
-.btn-check:focus+.btn-dark,
-.btn-dark:focus {
-
-    border-color: #9FE8DF !important;
-    box-shadow: none !important;
+.btn-check {
+    &:focus+.btn-dark {
+        border-color: $border-color_2 !important;
+        box-shadow: none !important;
+    }
 }
 
-.btn-success:focus {
-
-    border-color: #9FE8DF !important;
-    box-shadow: none !important;
+.btn-dark {
+    &:focus {
+        border-color: $border-color_2 !important;
+        box-shadow: none !important;
+    }
 }
 
-th {
-    vertical-align: middle;
-    border: 0 !important;
-    text-align: left;
-    width: 100px;
+.btn-success {
+    &:focus {
+        border-color: $border-color_2 !important;
+        box-shadow: none !important;
+    }
 }

@@ -1,16 +1,24 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, ElementRef, NgModule, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
+import e from 'express';
+import { MaxDigitsDirective } from '../directve/max.directive';
 declare var html2pdf: any;
+
 @Component({
   selector: 'app-calculate-ammount',
   standalone: true,
   imports: [ReactiveFormsModule, FormsModule, CommonModule],
   templateUrl: './calculate-ammount.component.html',
-  styleUrl: './calculate-ammount.component.scss'
+  styleUrl: './calculate-ammount.component.scss',
+
+  
 })
+
 export class CalculateAmmountComponent {
-  calculate: FormGroup;
+  ammount!:number
+  showfields = false
+  form!: NgForm;
   itemPrice: any
   price: any
   quantity: any
@@ -20,125 +28,84 @@ export class CalculateAmmountComponent {
   numericValue: any
   finalAmount: any
   cleanedValue: any
-  itemNameofshow:any
+  itemNameofshow: any
   tip: any
-  itemName:any
-  isActive:any
-  tipvalue:any
+  itemName: any
+  perperson:any
+  isActive: any
+  tipvalue: any
+  totaltip:number = 0.00
+  totalamount:any
+  tipAmount!:number
+  numberOfPeople: number = 1;
+  finaltotal:any
+  myForm: FormGroup;
   @ViewChild('pdfTable') pdfTable!: ElementRef;
+  numberOfPeopleInput: any;
   constructor(private fb: FormBuilder) {
-    this.calculate = this.fb.group({
-      price: ['', Validators.required],
-      total: ['' , ],
-      gst: ['',Validators.required],
-      quantity: ['',Validators.required],
-      finaltotal: [0.00],
-      tip: ['']
+    this.myForm = this.fb.group({
+      f: new FormControl('', [
+        Validators.min(10),
+        Validators.max(100),
+        Validators.minLength(2),
+        Validators.maxLength(6), // In template, maxlength is 7 so that you can type 7 chars without Chrome/ffox blocking you
+        Validators.pattern(/\d/),
+        ]),
     });
   }
-  pricelist = [
-    {
-      id:1,
-      Dish: 'Pizza',
-      price: 120
-    },
-    {
-      id:2,
-      Dish: 'French Fries',
-      price: 50
-    },
-    {
-      id:3,
-      Dish: 'Machurian',
-      price: 90
-    },
-    {
-      id:4,
-      Dish: 'Italian Pasta',
-      price: 130
-    }
-  ]
-  getPrice(price: any) {
-    this.pricelist.forEach((res:any)=>{
-      if(price.target.value == res.price){
-        this.itemPrice = res?.price
-        this.itemName = res?.Dish
-      }
-    })
-  
-    // const selectedValue = price.target.value;
-    // this.cleanedValue = selectedValue.replace(/[^a-zA-Z]/g, '');
-    // this.numericValue = parseFloat(price.target.value.replace(/[^\d]/g, ''));
-    // if (!isNaN(this.numericValue)) {
-    //   this.itemPrice = this.numericValue;
-    // } else {
-    //   console.error('Invalid numeric value');
-    // }
-  }
-  value(value:any){
+  value(value: any) {
     this.isActive = value
     this.tipvalue = value
-    this.calculate.controls['tip'].reset();
+    this.totalamount = Number(this.ammount)
+    this.totaltip = (this.totalamount *  this.tipvalue / 100)
+    this.finaltotal = this.totaltip + this.totalamount
+     
   }
-  // getTotal() {
-  //   const price = this.itemPrice;
-  //   const quantity = this.calculate.value.quantity
-  //   const quantityAmount = price * quantity
-  //   this.calculate.patchValue({
-  //     total: quantityAmount ? quantityAmount : ''
-  //   })
-  // }
+  onAmountChangetip(newValue: number){
+    this.tipAmount = newValue
+    this.totalamount = Number(this.ammount)
+    this.totaltip = (this.totalamount *  this.tipAmount / 100)
+    this.finaltotal = this.totaltip + this.totalamount
 
-  calculateammount() {
-    // this.total = this.calculate?.value?.total;
-    this.itemNameofshow = this.itemName
-    this.quantity = this.calculate?.value?.quantity
-    this.tip = this.calculate?.value?.tip ? this.calculate?.value?.tip : this.tipvalue;
-    this.price = this?.itemPrice;
-    this.quantityAmount = this?.price * this?.quantity
-    this.gst = this.calculate?.value?.gst;
-    
-   
-    const totalamounttip = Number(this.quantityAmount * this.tip / 100)
-    const total1 = Number(totalamounttip + this.quantityAmount)
-    console.log(total1,totalamounttip,  'finalAmount')
-    const totalwithgst = (total1 * this?.gst / 100)
-    this.finalAmount = total1 + totalwithgst
-    
-    this.calculate.patchValue({
-      // total: this.quantityAmount,
-      finaltotal: this.finalAmount
-    })
   }
-  handleReset(){
-    this.calculate.reset();
-    this.tipvalue = '';
-    this.itemPrice = ''
-    this.itemNameofshow = '0 . 00';
-    this.quantity = '0 . 00';
-    this.tip = '0 . 00';
-    this.gst = '0 . 00';
-    this.finalAmount = '0 . 00 ';
-    this.isActive = null; // Reset the active tip button
+  onAmountChange(newValue: number) {
+    this.ammount = newValue
+    this.totalamount = Number(this.ammount)
+     console.log(this.totalamount,'this.totalamount')
+    this.totaltip = (this.totalamount *  this.tipvalue / 100)
+    this.finaltotal = Number(this.totaltip + this.totalamount)
+    if(this.tipAmount){
+      this.onAmountChangetip(this.numericValue)
+    }
+  }
+  onAmountChangetwo(newValue: number){
+    if(newValue >= 2){
+      this.showfields = true
+    }else{
+      this.showfields = false
+    }
+  }
+  handleReset() {
+    
   }
   downloadAsPDF() {
-    // Target the element you want to convert to PDF
     const element = document.getElementById('pdfTable');
-
-    // Configuration for html2pdf
     const pdfOptions = {
-        margin: 10,
-        filename: 'bill.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      margin: 10,
+      filename: 'bill.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
     };
 
     // Generate the PDF
     html2pdf(element, pdfOptions);
-}
-hidetip(){
-  this.tipvalue = '';
-  this.isActive = false
+  }
+  hidetip() {
+    this.tipvalue = '';
+    this.isActive = false
+  }
+  onlyNumberKey(event:any) {
+    return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57;
 }
 }

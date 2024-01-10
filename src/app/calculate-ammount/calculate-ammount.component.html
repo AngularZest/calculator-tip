@@ -7,47 +7,46 @@
             <table class="table borderless" id="pdfTable" #pdfTable>
                 <thead>
                     <tr>
-                        <th scope="col">Item</th>
-                        <th scope="col" id="per-person-bill" class="valueth">{{itemNameofshow || '0 . 00'}}</th>
-                    </tr>
-                    <tr>
-                        <th scope="col">Quantity</th>
-                        <th scope="col" id="per-person-bill" class="valueth">{{quantity || '0 . 00'}}</th>
-                    </tr>
-
-                    <tr>
                         <th scope="col">Tip</th>
-                        <th scope="col" id='total-tip' class="valueth">{{tip|| '0 . 00'}} %</th>
+                        <th scope="col" id='total-tip' class="valueth">{{ totaltip || '0.00' }} ₹</th>
                     </tr>
                     <tr>
-                        <th scope="col">Gst</th>
-                        <th scope="col" id='total-tip' class="valueth">{{gst|| '0 . 00'}} %</th>
+                        <th scope="col"> Total Amount:</th>
+                        <th scope="col" id='total-tip' class="valueth">{{ finaltotal || '0.00'}} ₹</th>
                     </tr>
-
-                    <tr>
-                        <th scope="col">Total</th>
-                        <th scope="col" id='total-bill' class="valueth">{{finalAmount || '0 . 00'}} ₹ </th>
+                    <tr *ngIf="showfields">
+                        <th scope="col">Tip Per Person: </th>
+                        <th scope="col" id='total-bill' class="valueth">{{(totaltip / numberOfPeople || 0).toFixed(2)}} ₹</th>
+                    </tr>
+                    <tr *ngIf="showfields">
+                        <th scope="col">Total Per Person: </th>
+                        <th scope="col" id="per-person-bill" class="valueth">{{ (finaltotal / numberOfPeople || 0).toFixed(2) }}₹
+                        </th>
                     </tr>
                 </thead>
             </table>
         </div>
         <div class="col-md-5 p-5 order-xl-2 order-sm-1">
-            <form [formGroup]="calculate">
-                <h6>Item</h6>
+            <form [formGroup]="myForm" style="height: 326px;">
+                <!-- <h6>Item</h6>
                 <select id="input-person" formControlName="price" class='h-40 w-100' (change)="getPrice($event)">
                     <option disabled selected value="">Select Item</option>
                     @for (pricelist of pricelist; track pricelist ) {
                     <option [value]="pricelist?.price">{{pricelist?.Dish}} </option>
                     }
-                </select>
+                </select> -->
                 <h6>Price</h6>
-                <input type="number" id="input-person" [value]="itemPrice" class='h-40 form-control w-100' readonly>
-                <h6>Quantity</h6>
-                <input type="number" id="input-person" formControlName="quantity" class='h-40 form-control w-100'>
+                <input (keypress)="onlyNumberKey($event)" pattern="[a-zA-Z]+" class="h-40 form-control w-100" pattern="\d+" name="f" [(ngModel)]="ammount"
+                    (ngModelChange)="onAmountChange($event)" formControlName="f" min="10" max="100" minlength="2"
+                    maxlength="7">
+                <div *ngIf="myForm.get('f')?.hasError('pattern')" class="error">
+                    Please enter numeric value.
+                </div>
 
-                <!-- <h6>Total</h6>
-                <input (click)="getTotal()" (keydown.enter)="getTotal()" type="number" id="input-bill"
-                    formControlName="total" class='form-control m-2 w-100'> -->
+                <!-- <input type="number" name="f" formControlName="f" pattern="\d+" id="input-person"
+                    class="h-40 form-control w-100" min="10" max="100" minlength="2" maxlength="7" /> -->
+
+
                 <h6>Tip %</h6>
                 <div class="tip_button">
                     <input (click)="value(5)" value="5 %" type="button" [ngClass]="{'success': isActive == 5 }"
@@ -56,24 +55,32 @@
                     <input (click)="value(15)" value="15 %" type="button" [ngClass]="{'success': isActive == 15}"
                         style="margin-right: 0;">
                 </div>
-                <div class="tip_button">
-                    <input (click)="value(25)" value="25 %" type="button" [ngClass]="{'success': isActive == 25}"
-                        style="margin-left: 0;">
-                    <input (click)="value(50)" value="50 %" type="button" [ngClass]="{'success': isActive == 50}">
-                    <input type="number" id="input-person" formControlName="tip" placeholder="Custom"
-                        class='form-control m-2 w-100' style="margin-right: 0!important;padding-left: 10px;height:45px"  (click)="hidetip()">
+                <div class="tip_buttons">
+                    <input type="number" id="input-person" [(ngModel)]="tipAmount"
+                        (ngModelChange)="onAmountChangetip($event)" [ngModelOptions]="{standalone: true}"
+                        placeholder="Custom" class='form-control w-100'
+                        style="margin-right: 0!important;margin-left: 0!important;padding-left: 10px;height:45px"
+                        (click)="hidetip()">
                 </div>
-                <h6>Gst %</h6>
-                <input type="number" id="input-tip" formControlName="gst" class='h-40 form-control  w-100'>
-                <!-- <h6>Final Total</h6>
-                <input id="input-tip" readonly formControlName="finaltotal" class='form-control m-2 w-100'> -->
+                <h6>Number of People</h6>
+                <input type="number" id="input-person" class='h-40 form-control w-100' [(ngModel)]="numberOfPeople"
+                    name="numberOfPeople" required #numberOfPeopleInput="ngModel"
+                    (ngModelChange)="onAmountChangetwo($event)" [ngModelOptions]="{standalone: true}" value="1"
+                    [min]="1">
+
+                <!-- Display validation error message -->
+                <div
+                    *ngIf="(numberOfPeopleInput.invalid && (numberOfPeopleInput.dirty || numberOfPeopleInput.touched)) || (numberOfPeopleInput.value === '' && form.submitted)">
+                    <div *ngIf="numberOfPeopleInput.errors?.['required'] && !numberOfPeopleInput.errors?.['min']"
+                        class="error">
+                        Number of people is required.
+                    </div>
+                    <div *ngIf="numberOfPeopleInput.errors?.['min']" class="error">
+                        Number of people must be at least 1.
+                    </div>
+                </div>
                 <p class="text-danger" id='warning'></p>
-                <div class="buttons__">
-                    <button (click)="calculateammount()" [disabled]="this.calculate.invalid"
-                        class="btn btn-success  w-100" style="margin-bottom: 15px;">Calculate</button>
-                    <button (click)="handleReset()" class="btn btn-dark w-100"
-                        style="background:#b4dee5; color:black; border:none!important">Reset</button>
-                </div>
+
             </form>
         </div>
     </div>
