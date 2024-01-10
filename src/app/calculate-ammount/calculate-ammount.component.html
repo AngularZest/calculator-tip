@@ -8,11 +8,11 @@
                 <thead>
                     <tr>
                         <th scope="col">Tip:</th>
-                        <th scope="col" id='total-tip' class="valueth">{{ totaltip || '0.00' }} ₹</th>
+                        <th scope="col" id='total-tip' class="valueth">{{ (totaltip || 0).toFixed(2) }} ₹</th>
                     </tr>
                     <tr>
                         <th scope="col"> Total Amount:</th>
-                        <th scope="col" id='total-tip' class="valueth">{{ finaltotal || '0.00'}} ₹</th>
+                        <th scope="col" id='total-tip' class="valueth">{{ (finaltotal || 0).toFixed(2)}} ₹</th>
                     </tr>
                     <tr *ngIf="showfields">
                         <th scope="col">Tip Per Person: </th>
