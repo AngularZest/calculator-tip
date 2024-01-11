@@ -6,3 +6,24 @@ body {
     // font-family: 'Poppins', sans-serif;
     font-family: 'Quicksand', sans-serif;
 }
+@media screen and (max-width: 768px) {
+    .container {
+        background: #fff;
+        border-radius: 25px;
+        padding: 3% !important;
+        box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+        border: 0px;
+        width: 80%;
+        position: relative!important;
+        top: inherit!important;
+        left: inherit!important;
+        transform:none!important;
+        // margin: auto;
+    }
+    h3.text-center {
+        color: rgb(26, 72, 75);
+        font-size: 25px!important;
+        margin-top: 12px;
+        margin-bottom: -47px!important;
+    }
+}

@@ -14,7 +14,11 @@ $border-color_2: #9FE8DF;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
     border: 0px;
     width: 80%;
-    margin: auto;
+    position: absolute;
+    top: 43%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    // margin: auto;
 }
 
 .error {
