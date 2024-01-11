@@ -12,16 +12,17 @@ declare var html2pdf: any;
   templateUrl: './calculate-ammount.component.html',
   styleUrl: './calculate-ammount.component.scss',
 
-  
+
 })
 
 export class CalculateAmmountComponent {
-  ammount!:number
+  ammount: any
   showfields = false
   form!: NgForm;
   itemPrice: any
   price: any
   quantity: any
+  resetclicked = false
   quantityAmount: any
   total: any
   gst: any
@@ -31,14 +32,14 @@ export class CalculateAmmountComponent {
   itemNameofshow: any
   tip: any
   itemName: any
-  perperson:any
+  perperson: any
   isActive: any
   tipvalue: any
-  totaltip:number = 0.00
-  totalamount:any
-  tipAmount:any
-  numberOfPeople: number = 1;
-  finaltotal:any
+  totaltip: any = 0.00
+  totalamount: any
+  tipAmount: any
+  numberOfPeople: any = 1;
+  finaltotal: any
   myForm: FormGroup;
   @ViewChild('pdfTable') pdfTable!: ElementRef;
   numberOfPeopleInput: any;
@@ -50,7 +51,7 @@ export class CalculateAmmountComponent {
         Validators.minLength(2),
         Validators.maxLength(6), // In template, maxlength is 7 so that you can type 7 chars without Chrome/ffox blocking you
         Validators.pattern(/\d/),
-        ]),
+      ]),
     });
   }
   value(value: any) {
@@ -58,38 +59,53 @@ export class CalculateAmmountComponent {
     this.isActive = value
     this.tipvalue = value
     this.totalamount = Number(this.ammount)
-    this.totaltip = (this.totalamount *  this.tipvalue / 100)
+    this.totaltip = (this.totalamount * this.tipvalue / 100)
     this.finaltotal = this.totaltip + this.totalamount
-     
+
   }
-  onAmountChangetip(newValue: number){
-    
+  onAmountChangetip(newValue: number) {
+
     this.tipAmount = newValue
     this.totalamount = Number(this.ammount)
-    this.totaltip = (this.totalamount *  this.tipAmount / 100)
+    this.totaltip = (this.totalamount * this.tipAmount / 100)
     this.finaltotal = this.totaltip + this.totalamount
-   
+
 
   }
   onAmountChange(newValue: number) {
     this.ammount = newValue
     this.totalamount = Number(this.ammount)
-     console.log(this.totalamount,'this.totalamount')
-    this.totaltip = (this.totalamount *  this.tipvalue / 100)
-    this.finaltotal = Number(this.totaltip + this.totalamount)
-    if(this.tipAmount){
+    console.log(this.totalamount, 'this.totalamount')
+    this.totaltip = (this.totalamount * this.tipvalue / 100)
+    // this.finaltotal = Number(this.totaltip + this.totalamount)
+    if (this.tipAmount) {
       this.onAmountChangetip(this.numericValue)
     }
   }
-  onAmountChangetwo(newValue: number){
-    if(newValue >= 2){
+  onAmountChangetwo(newValue: number) {
+    if (newValue >= 2) {
       this.showfields = true
-    }else{
+    } else {
       this.showfields = false
     }
   }
   handleReset() {
-    
+
+    this.resetclicked = true
+    this.totalamount = ''
+    this.totaltip = ''
+    this.numberOfPeople = ''
+    this.finaltotal = ''
+    this.ammount = ''
+    this.isActive = ''
+    this.tipAmount = ''
+    this.tipvalue = ''
+    this.numberOfPeople = 1
+    this.showfields = false
+    setTimeout(() => {
+      this.resetclicked = false
+    }, 1000)
+
   }
   downloadAsPDF() {
     const element = document.getElementById('pdfTable');
@@ -108,7 +124,7 @@ export class CalculateAmmountComponent {
     this.tipvalue = '';
     this.isActive = false
   }
-  onlyNumberKey(event:any) {
+  onlyNumberKey(event: any) {
     return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57;
-}
+  }
 }

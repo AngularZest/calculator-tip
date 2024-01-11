@@ -1,33 +1,73 @@
 <section class="container p-3 mt-5">
+
+    <h3 class="text-center " style="color:rgb(26, 72, 75);font-size: 34px;
+    margin-bottom: 30px;"><b>Tip Calculator</b></h3>
+
+
+
     <div class="row d-flex justify-content-between">
         <div class="col-md-6 p-5 border right-section order-xl-1 order-sm-2">
-            <h3 class="text-center ">Payment</h3>
+            <!-- <h3 class="text-center ">Payment</h3>
+             -->
             <!-- <button (click)="downloadAsPDF()">downloadAsPDF</button> -->
+            <table class="table borderless" id="pdfTable" #pdfTable>
+                <thead>
+                    <tr>
+                        <th scope="col">
+                            <h3>Result</h3>
+                        </th>
+                        <th scope="col" style="text-align: right;">
+                            <div (click)="handleReset()"  class="reloadDouble " [ngClass]="resetclicked?'animation':''"></div>
+                        </th>
+                    </tr>
+
+                </thead>
+            </table>
             <hr>
             <table class="table borderless" id="pdfTable" #pdfTable>
                 <thead>
                     <tr>
-                        <th scope="col">Tip:</th>
-                        <th scope="col" id='total-tip' class="valueth">{{ (totaltip || 0).toFixed(2) }} ₹</th>
+                        <th scope="col">Bill Amount:</th>
+                        <th scope="col" id='total-tip' class="valueth"> ₹ {{ (totalamount || 0).toFixed(2) }}</th>
                     </tr>
                     <tr>
+                        <th scope="col">Total Tip Amount:
+
+                        </th>
+                        <th scope="col" id='total-tip' class="valueth"> ₹ {{ (totaltip || 0).toFixed(2) }}</th>
+                    </tr>
+
+                    <tr>
                         <th scope="col"> Total Amount:</th>
-                        <th scope="col" id='total-tip' class="valueth">{{ (finaltotal || 0).toFixed(2)}} ₹</th>
+                        <th scope="col" id='total-tip' class="valueth"> ₹ {{ (finaltotal || 0).toFixed(2)}}
+                        </th>
                     </tr>
-                    <tr *ngIf="showfields">
-                        <th scope="col">Tip Per Person: </th>
-                        <th scope="col" id='total-bill' class="valueth">{{(totaltip / numberOfPeople || 0).toFixed(2)}} ₹</th>
+                    <!-- *ngIf="showfields" -->
+                    <tr>
+                        <th *ngIf="showfields" scope="col">Total Tip Amount:
+                            <br />
+                            <span>/  person</span>
+                        </th>
+                        <th scope="col" *ngIf="showfields" id='total-bill' class="valueth"> ₹ {{(totaltip /
+                            numberOfPeople ||
+                            0).toFixed(2)}}</th>
                     </tr>
-                    <tr *ngIf="showfields">
-                        <th scope="col">Total Per Person: </th>
-                        <th scope="col" id="per-person-bill" class="valueth">{{ (finaltotal / numberOfPeople || 0).toFixed(2) }} ₹
+                    <!-- *ngIf="showfields" -->
+                    <tr>
+                        <th *ngIf="showfields" scope="col">Total Amount:
+                            <br />
+                            <span>/  person</span>
+                        </th>
+                        <th *ngIf="showfields" scope="col" id="per-person-bill" class="valueth"> ₹ {{ (finaltotal /
+                            numberOfPeople ||
+                            0).toFixed(2) }}
                         </th>
                     </tr>
                 </thead>
             </table>
         </div>
         <div class="col-md-5 p-5 order-xl-2 order-sm-1">
-            <form [formGroup]="myForm" style="height: 326px;">
+            <form [formGroup]="myForm">
                 <!-- <h6>Item</h6>
                 <select id="input-person" formControlName="price" class='h-40 w-100' (change)="getPrice($event)">
                     <option disabled selected value="">Select Item</option>
@@ -35,10 +75,10 @@
                     <option [value]="pricelist?.price">{{pricelist?.Dish}} </option>
                     }
                 </select> -->
-                <h6>Amount</h6>
-                <input (keypress)="onlyNumberKey($event)" pattern="[a-zA-Z]+" class="h-40 form-control w-100" pattern="\d+" name="f" [(ngModel)]="ammount"
-                    (ngModelChange)="onAmountChange($event)" formControlName="f" min="10" max="100" minlength="2"
-                    maxlength="7">
+                <h6>Bill Amount</h6>
+                <input (keypress)="onlyNumberKey($event)" pattern="[a-zA-Z]+" class="h-40 form-control w-100"
+                    pattern="\d+" name="f" [(ngModel)]="ammount" (ngModelChange)="onAmountChange($event)"
+                    formControlName="f" min="10" max="100" minlength="2" maxlength="7">
                 <div *ngIf="myForm.get('f')?.hasError('pattern')" class="error">
                     Please enter numeric value.
                 </div>
@@ -47,7 +87,7 @@
                     class="h-40 form-control w-100" min="10" max="100" minlength="2" maxlength="7" /> -->
 
 
-                <h6>Tip %</h6>
+                <h6>Tip Amount </h6>
                 <div class="tip_button">
                     <input (click)="value(5)" value="5 %" type="button" [ngClass]="{'success': isActive == 5 }"
                         style="margin-left: 0;">
@@ -56,17 +96,17 @@
                         style="margin-right: 0;">
                 </div>
                 <div class="tip_buttons">
-                    <input type="number" id="input-person" [(ngModel)]="tipAmount"
+                    <input id="input-person" [(ngModel)]="tipAmount"
                         (ngModelChange)="onAmountChangetip($event)" [ngModelOptions]="{standalone: true}"
-                        placeholder="Custom" class='form-control w-100'
+                        placeholder="Custom" class='form-control w-100' min="10" max="100" minlength="2" maxlength="3" (keypress)="onlyNumberKey($event)"
                         style="margin-right: 0!important;margin-left: 0!important;padding-left: 10px;height:45px"
                         (click)="hidetip()">
                 </div>
                 <h6>Number of People</h6>
-                <input type="number" id="input-person" class='h-40 form-control w-100' [(ngModel)]="numberOfPeople"
-                    name="numberOfPeople" required #numberOfPeopleInput="ngModel"
-                    (ngModelChange)="onAmountChangetwo($event)" [ngModelOptions]="{standalone: true}" value="1"
-                    [min]="1">
+                <input type="number" (keypress)="onlyNumberKey($event)" id="input-person"
+                    class='h-40 form-control w-100' [(ngModel)]="numberOfPeople" name="numberOfPeople" required
+                    #numberOfPeopleInput="ngModel" (ngModelChange)="onAmountChangetwo($event)"
+                    [ngModelOptions]="{standalone: true}" value="1" [min]="1">
 
                 <!-- Display validation error message -->
                 <div
@@ -76,7 +116,7 @@
                         Number of people is required.
                     </div>
                     <div *ngIf="numberOfPeopleInput.errors?.['min']" class="error">
-                        Number of people must be at least 1.
+                        Number of people should be greater than 0.
                     </div>
                 </div>
                 <p class="text-danger" id='warning'></p>
